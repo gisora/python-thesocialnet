@@ -122,6 +122,12 @@ table#search_table td {
 }
 
 .bottom_nav_link {
+    color: #538ADC;
+    text-decoration: none;
+}
+
+.bottom_nav_link:visited {
+    color: #538ADC;
     text-decoration: none;
 }
 

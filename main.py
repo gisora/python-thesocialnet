@@ -21,6 +21,26 @@ def get_db_session():
         yield session
 
 
+@app.get("/about", response_class=HTMLResponse)
+def get_about_page(request: Request, loged_in: bool=False):
+    return templates.TemplateResponse("loged_out/about.html", {"request": request})
+
+@app.get("/contact", response_class=HTMLResponse)
+def get_about_page(request: Request, loged_in: bool=False):
+    return templates.TemplateResponse("loged_out/contact.html", {"request": request})
+
+@app.get("/faq", response_class=HTMLResponse)
+def get_about_page(request: Request, loged_in: bool=False):
+    return templates.TemplateResponse("loged_out/faq.html", {"request": request})
+
+@app.get("/terms", response_class=HTMLResponse)
+def get_about_page(request: Request, loged_in: bool=False):
+    return templates.TemplateResponse("loged_out/terms.html", {"request": request})
+
+@app.get("/privacy", response_class=HTMLResponse)
+def get_about_page(request: Request, loged_in: bool=False):
+    return templates.TemplateResponse("loged_out/privacy.html", {"request": request})
+
 @app.get("/", response_class=HTMLResponse)
 def get_index_page(request: Request, loged_in: bool=False):
     context = {
