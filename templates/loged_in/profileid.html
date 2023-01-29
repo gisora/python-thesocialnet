@@ -41,7 +41,18 @@
                     <td class="content_table_heading" align="right"></td>
                 </tr>
                 <tr>
-                    <td colspan="2">{{ my_friends }}</td>
+                    <td colspan="2">
+                        {% if my_friends|length > 0 -%}    
+                        {% for result in my_friends %}
+                        <div style="width: 65px; text-align:center; float: left;">
+                             <img height="50px" src="{{ url_for('static', path='profile_img/')}}{{ result.picture_src }}">
+                             <br><a class="left_nav_link" href="/profile/{{result.id}}">{{ result.name }}</a>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        Friends list is epmty :(
+                    {% endif%}
+                    </td>
                 </tr>
             </table>
         </td>

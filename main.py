@@ -6,7 +6,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from app.database import engine, User, Relationship, Sex, LookingFor, PoliticalView, RelationshipStatus, SchoolStatus
 from app.auth import AuthHandler
-from sqlmodel import Session, select
+from sqlmodel import Session, select, or_
 
 app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static")
@@ -92,8 +92,24 @@ def logout(request: Request, response: Response):
 @app.get("/home", response_class=HTMLResponse)
 def get_home_page(*, request: Request, session: Session=Depends(get_db_session), user_id=Depends(auth_handler.auth_wrapper)):
     user = session.get(User, user_id)
-    my_friends = "You have no friends :("
     
+    stmt = select(Relationship).where(Relationship.confirmed == True).where(or_(Relationship.sender_id == user.id, Relationship.reciever_id == user.id))
+    results = session.exec(stmt).all()
+
+    my_friends = []
+    if len(results) > 0:
+        for r in results:
+            if r.sender_id == user.id:
+                friend = session.get(User, r.reciever_id)
+            elif r.reciever_id == user.id:
+                friend = session.get(User, r.sender_id)
+            result = {
+                "id": friend.id,
+                "picture_src": friend.picture_src,
+                "name": friend.name
+            }
+            my_friends.append(result)
+
     stmt = select(Relationship).where(Relationship.reciever_id == user.id).where(Relationship.confirmed == False)
     results = session.exec(stmt).all()
     my_requests = len(results) if len(results) > 0 else 0
@@ -119,7 +135,23 @@ def get_home_page(*, request: Request, session: Session=Depends(get_db_session),
     my_messages = 0
     
     profile_owner = session.get(User, id)
-    my_friends = f"{profile_owner.name} has no friends :("
+
+    stmt = select(Relationship).where(Relationship.confirmed == True).where(or_(Relationship.sender_id == profile_owner.id, Relationship.reciever_id == profile_owner.id))
+    results = session.exec(stmt).all()
+
+    my_friends = []
+    if len(results) > 0:
+        for r in results:
+            if r.sender_id == profile_owner.id:
+                friend = session.get(User, r.reciever_id)
+            elif r.reciever_id == profile_owner.id:
+                friend = session.get(User, r.sender_id)
+            result = {
+                "id": friend.id,
+                "picture_src": friend.picture_src,
+                "name": friend.name
+            }
+            my_friends.append(result)
 
     context = {
         "request": request,
