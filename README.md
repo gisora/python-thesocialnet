@@ -13,6 +13,11 @@
 - sqlmodel [ https://sqlmodel.tiangolo.com/ ]
 - jinja2 [ https://palletsprojects.com/p/jinja/ ]
 
+### Papildomos priemonės (user authentication):
+- passlib [ https://passlib.readthedocs.io/en/stable/ ]
+- bcrypt [ https://github.com/pyca/bcrypt/ ]
+- pyjwt [ https://github.com/jpadilla/pyjwt ]
+
 ### Paleidimo instrukcija:
 1. Sukuriam virtualią aplinką: ```python -m venv venv```
 2. Aktyvuojam virtualią aplinką:
