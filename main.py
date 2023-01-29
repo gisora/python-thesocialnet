@@ -458,7 +458,9 @@ def get_friends_page(*, request: Request, session: Session=Depends(get_db_sessio
             result = {
                 "id": friend.id,
                 "picture_src": friend.picture_src,
-                "name": friend.name
+                "name": friend.name,
+                "school": friend.school,
+                "residence": friend.residence
             }
             my_friends.append(result)
 
@@ -515,7 +517,9 @@ def get_friends(*, request: Request, session: Session=Depends(get_db_session), u
             result = {
                 "id": friend.id,
                 "picture_src": friend.picture_src,
-                "name": friend.name
+                "name": friend.name,
+                "school": friend.school,
+                "residence": friend.residence
             }
             my_friends.append(result)
 
