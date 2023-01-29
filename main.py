@@ -441,3 +441,104 @@ def cancel_invite(*, request: Request, session: Session=Depends(get_db_session),
     session.commit()
 
     return RedirectResponse(url=app.url_path_for("get_requests_page"), status_code=status.HTTP_303_SEE_OTHER)
+
+@app.get("/friends", response_class=HTMLResponse)
+def get_friends_page(*, request: Request, session: Session=Depends(get_db_session), user_id=Depends(auth_handler.auth_wrapper)):
+    user = session.get(User, user_id)
+    my_messages = 0
+    
+    stmt = select(Relationship).where(Relationship.confirmed == True).where(or_(Relationship.sender_id == user.id, Relationship.reciever_id == user.id))
+    results = session.exec(stmt).all()
+
+    my_friends = []
+    if len(results) > 0:
+        for r in results:
+            if r.sender_id == user.id:
+                friend = session.get(User, r.reciever_id)
+            elif r.reciever_id == user.id:
+                friend = session.get(User, r.sender_id)
+            result = {
+                "id": friend.id,
+                "picture_src": friend.picture_src,
+                "name": friend.name
+            }
+            my_friends.append(result)
+
+
+    stmt = select(Relationship).where(Relationship.reciever_id == user.id).where(Relationship.confirmed == False)
+    results = session.exec(stmt).all()
+    my_requests = len(results) if len(results) > 0 else 0
+    
+    my_requests_list = []
+
+    if len(results) > 0:
+        for r in results:
+            sender = session.get(User, r.sender_id)
+            result = {
+                "id": sender.id,
+                "picture_src": sender.picture_src,
+                "name": sender.name,
+                "school": sender.school,
+                "residence": sender.residence
+            }
+            my_requests_list.append(result)
+
+    context = {
+        "request": request,
+        "user": user,
+        "my_requests": my_requests,
+        "my_messages": my_messages,
+        "my_friends": my_friends
+    }
+    return templates.TemplateResponse("loged_in/friends.html", context)
+
+@app.get("/friends/{id}", response_class=HTMLResponse)
+def get_friends(*, request: Request, session: Session=Depends(get_db_session), user_id=Depends(auth_handler.auth_wrapper), id:int):
+    viewer = session.get(User, id)
+    
+    stmt = select(Relationship).where(Relationship.reciever_id == viewer.id).where(Relationship.confirmed == False)
+    results = session.exec(stmt).all()
+    my_requests = len(results) if len(results) > 0 else 0
+    
+    my_messages = 0
+    
+    profile_owner = session.get(User, id)
+
+    stmt = select(Relationship).where(Relationship.confirmed == True).where(or_(Relationship.sender_id == profile_owner.id, Relationship.reciever_id == profile_owner.id))
+    results = session.exec(stmt).all()
+
+    my_friends = []
+    if len(results) > 0:
+        for r in results:
+            if r.sender_id == profile_owner.id:
+                friend = session.get(User, r.reciever_id)
+            elif r.reciever_id == profile_owner.id:
+                friend = session.get(User, r.sender_id)
+            result = {
+                "id": friend.id,
+                "picture_src": friend.picture_src,
+                "name": friend.name
+            }
+            my_friends.append(result)
+
+    context = {
+        "request": request,
+        "viewer": viewer,
+        "user": profile_owner,
+        "my_friends": my_friends,
+        "my_requests": my_requests,
+        "my_messages": my_messages
+    }
+    return templates.TemplateResponse("loged_in/friendsid.html", context)
+
+@app.get("/friends/remove/{id}")
+def remove_friend(*, request: Request, session: Session=Depends(get_db_session), user_id=Depends(auth_handler.auth_wrapper), id:int):
+    user = session.get(User, user_id)
+
+    stmt = select(Relationship).where(Relationship.sender_id == user.id).where(Relationship.reciever_id == id)
+    result = session.exec(stmt).first()
+   
+    session.delete(result)
+    session.commit()
+
+    return RedirectResponse(url=app.url_path_for("get_friends_page"), status_code=status.HTTP_303_SEE_OTHER)
