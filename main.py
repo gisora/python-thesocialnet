@@ -367,7 +367,7 @@ def cancel_invite(*, request: Request, session: Session=Depends(get_db_session),
     return RedirectResponse(url=app.url_path_for("get_invite_page"), status_code=status.HTTP_303_SEE_OTHER)
 
 @app.get("/requests", response_class=HTMLResponse)
-def get_invite_page(*, request: Request, session: Session=Depends(get_db_session), user_id=Depends(auth_handler.auth_wrapper)):
+def get_requests_page(*, request: Request, session: Session=Depends(get_db_session), user_id=Depends(auth_handler.auth_wrapper)):
     user = session.get(User, user_id)
     my_messages = 0
     
@@ -397,3 +397,15 @@ def get_invite_page(*, request: Request, session: Session=Depends(get_db_session
         "my_requests_list": my_requests_list
     }
     return templates.TemplateResponse("loged_in/requests.html", context)
+
+@app.get("/requests/accept/{id}")
+def cancel_invite(*, request: Request, session: Session=Depends(get_db_session), user_id=Depends(auth_handler.auth_wrapper), id:int):
+    user = session.get(User, user_id)
+
+    stmt = select(Relationship).where(Relationship.sender_id == id).where(Relationship.reciever_id == user.id)
+    relationship = session.exec(stmt).first()
+    
+    relationship.confirmed = True
+    session.commit()
+
+    return RedirectResponse(url=app.url_path_for("get_requests_page"), status_code=status.HTTP_303_SEE_OTHER)
