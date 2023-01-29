@@ -1,0 +1,182 @@
+{% extends "loged_in.html" %}
+
+{% block content_title %}
+    Profile for {{ user.name }} (This is you)
+{% endblock %}
+
+{% block my_requests %}
+    {{ my_requests }}
+{% endblock %}
+
+{% block my_messages %}
+    {{ my_messages }}
+{% endblock %}
+
+{% block content %}
+<table>
+    <tr valign="top">
+        <td width="40%">
+            <table id="picture_table" width="100%" class="solid_blue_border">
+                <tr>
+                    <td class="content_table_heading">Picture</td>
+                    <td class="content_table_heading" align="right">[ <a href="/picture">edit</a> ]</td>
+                </tr>
+                <tr>
+                    <td colspan="2" align="center"><img width="170px" src="{{ url_for('static', path='profile_img/')}}{{ user.picture_src }}"></td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td></td>
+                </tr>
+                <tr class="solid_blue_border">
+                    <td colspan="2"><a href="/profile">Edit your profile</a></td>
+                </tr>
+                <tr class="solid_blue_border">
+                    <td colspan="2">My account preferences</td>
+                </tr>
+                <tr class="solid_blue_border">
+                    <td colspan="2">My privacy preferences</td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="content_table_heading">Friends</td>
+                    <td class="content_table_heading" align="right">[ edit ]</td>
+                </tr>
+                <tr>
+                    <td colspan="2">{{ my_friends }}</td>
+                </tr>
+            </table>
+        </td>
+        <td width="15px"></td>
+        <td>
+            <table id="profile_table" width="100%" class="solid_blue_border">
+                <tr>
+                    <td width="35%" class="content_table_heading">Information</td>
+                    <td class="content_table_heading" align="right">[ <a href="/profile">edit</a> ]</td>
+                </tr>
+                <tr>
+                    <td><b>Account Info:</b></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Name:</td>
+                    <td>{{ user.name }}</td>
+                </tr>
+                <tr>
+                    <td>Member Since:</td>
+                    <td>{{ user.created.strftime("%Y-%m-%d") }}</td>
+                </tr>
+                <tr>
+                    <td>Last Update:</td>
+                    <td>{{ user.last_update.strftime("%Y-%m-%d") }}</td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><b>Basic Info:</b></td>
+                    <td></td>
+                </tr>
+                <tr>
+                <tr>
+                    <td>School:</td>
+                    <td>{{ user.school }}</td>
+                </tr>
+                <tr>
+                    <td>Status:</td>
+                    <td>{{ user.school_status.value }}</td>
+                </tr>
+                <tr>
+                    <td>Sex:</td>
+                    <td>{{ user.sex }}</td>
+                </tr>
+                <tr>
+                    <td>Residence:</td>
+                    <td>{{ user.residence }}</td>
+                </tr>
+                <tr>
+                    <td>Birthday:</td>
+                    <td>{{ user.birthday.strftime("%Y-%m-%d") if user.birthday != None else None}}</td>
+                </tr>
+                <tr>
+                    <td>Home Town:</td>
+                    <td>{{ user.home_town }}</td>
+                </tr>
+                <tr>
+                    <td>Highschool:</td>
+                    <td>{{ user.highschool }}</td>
+                </tr>
+
+                <tr>
+                    <td>&nbsp;</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><b>Contact Info:</b></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Email:</td>
+                    <td>{{ user.email }}</td>
+                </tr>
+                <tr>
+                    <td>Screenname:</td>
+                    <td>{{ user.screenname }}</td>
+                </tr>
+                <tr>
+                    <td>Mobile:</td>
+                    <td>{{ user.mobile }}</td>
+                </tr>
+                <tr>
+                    <td>Websites:</td>
+                    <td>{{ user.website }}</td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><b>Personal Info:</b></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Looking For:</td>
+                    <td>{{ user.looking_for}}</td>
+                </tr>
+                <tr>
+                    <td>Interested In:</td>
+                    <td>{{ user.interested_in }}</td>
+                </tr>
+                <tr>
+                    <td>Relationship Status:</td>
+                    <td>{{ user.relationship_status }}</td>
+                </tr>
+                <tr>
+                    <td>Plitical Views:</td>
+                    <td>{{ user.political_views }}</td>
+                </tr>
+                <tr>
+                    <td>Interests:</td>
+                    <td>{{ user.interests }}</td>
+                </tr>
+                <tr>
+                    <td>Music:</td>
+                    <td>{{ user.music }}</td>
+                </tr>
+                <tr>
+                    <td>Classes:</td>
+                    <td>{{ user.classes }}</td>
+                </tr>
+                <tr>
+                    <td>Fridge:<br>(friends only)</td>
+                    <td>{{ user.fridge }}</td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+{% endblock %}

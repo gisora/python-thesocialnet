@@ -1,0 +1,49 @@
+{% extends "loged_out.html" %}
+{% block content_title %}
+	Registration
+{% endblock %}
+
+{% block content %}
+	<br>
+	To register for thesocialnet, just fill in the four fields below. You will
+	have a chance to enter additional information and submit a picture once you
+	have registered.
+	<br><br>
+	<center>
+		<form method="post" action="/register">
+			<table class="register_table">
+				<tr>
+					<td>Name: </td>
+					<td><input type="text" class="inputtext" name="name" value="" size="30"></td>
+				</tr>
+				<tr>
+					<td>Status: </td>
+					<td><select class="inputtext" name="school_status">
+							<option value="">
+							</option>
+							{% for school_status in school_status_enum %}
+								<option value="{{ school_status.value }}">{{ school_status.value }}</option>
+							{% endfor %}
+						</select></td>
+				</tr>
+				<tr>
+					<td>Email: (codeacademy)&nbsp;</td>
+					<td><input type="text" class="inputtext" name="email" value="" size="30"></td>
+				</tr>
+				<tr>
+					<td>Password*: (not fas) </td>
+					<td><input type="password" class="inputtext" name="password" size="30"></td>
+				</tr>
+				<tr>
+					<td colspan="2"><input type="checkbox" name="terms" value="0">I have read and understood the <a
+							href="/terms">Terms of Use</a>, and I <br>agree to them.</td>
+				</tr>
+				<tr>
+					<td colspan="2">* You can choose any password. It does not have to be, and <br> should not be, your FAS password.
+					</td>
+				</tr>
+			</table>
+			<br><input type="submit" value="Register Now!" class="inputsubmit">
+		</form>
+	</center>
+{% endblock %}

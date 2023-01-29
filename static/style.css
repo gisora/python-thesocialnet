@@ -1,0 +1,140 @@
+body {
+    font-size: 11px;
+    font-weight: normal;
+    font-family: tahoma,arial,sans-serif;
+    text-decoration: none;
+}
+
+table {
+    border-collapse: collapse;
+    border: 0px;
+    table-layout: fixed;
+}
+
+th, tr, td {
+    padding: 0px;
+}
+
+table.register_table {
+    border-collapse: initial;
+    border-spacing: 5px;
+}
+
+table#profile_table {
+    border-collapse: initial;
+    border-spacing: 0px;
+}
+
+table#profile_table td {
+    padding-top: 2px;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.blue_bg {
+    background-color: #3B5998;
+}
+
+.solid_blue_border {
+    border-color: #3B5998;
+    border-width: 1px;
+    border-style: solid;
+}
+
+.dashed_blue_border {
+    border-color: #3B5998;
+    border-width: 1px;
+    border-style: dashed;
+    padding: 2px;
+}
+
+.inputtext {
+    width: 94%;
+    border-width: 1px;
+    border-color:#666666;
+    background-color:#D9DFEA;
+    font-size: 11px;
+}
+
+.inputsubmit {
+    border-style:solid;
+    border-top-width:1px;
+    border-left-width:1px;
+    border-bottom-width:2px;
+    border-right-width:2px;
+    border-top-color:#D9DFEA;
+    border-left-color:#D9DFEA;
+    border-bottom-color:#3B5998;
+    border-right-color:#3B5998;
+    background-color:#538ADC;
+    color:#FFFFFF;
+    font-size:11px;
+    font-weight:none;
+    font-family:tahoma,arial,sans-serif;
+}
+
+.content_table_heading {
+    background-color: #3B5998;
+    color:#FFFFFF;
+    font-size:12px;
+    padding: 2px;
+    vertical-align: middle;
+}
+
+.content_table_row {
+    padding: 3px; 
+}
+
+.top_nav {
+    height: 25px;
+    vertical-align: middle;
+}
+
+.top_nav_link {
+    color: #FFFFFF;
+    text-decoration: none;
+}
+
+.bottom_nav_link {
+    text-decoration: none;
+}
+
+.left_nav_link {
+    margin-left: 5px;
+    text-decoration: none;
+}
+
+#content {
+    width: 96%;
+    margin: auto;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+#bottom_nav {
+    text-align: center;
+    width: 96%;
+    margin: auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+#left_col {
+    width: 20%;
+    padding: 2px;
+    vertical-align:text-top;
+}
+
+#right_col {
+    width: 80%;
+    padding: 2px;
+}
+
+#container {
+    width: 700px;
+    margin: auto;
+}
+
+#header {
+    padding: 0px;
+}

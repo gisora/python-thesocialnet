@@ -1,0 +1,174 @@
+{% extends "loged_in.html" %}
+
+{% block content_title %}
+    Edit profile for {{ user.name }} (This is you)
+{% endblock %}
+
+{% block my_requests %}
+    {{ my_requests }}
+{% endblock %}
+
+{% block my_messages %}
+    {{ my_messages }}
+{% endblock %}
+
+{% block content %}
+        <form method="post" action="/profile">
+            <table id="profile_table" width="100%" class="solid_blue_border">
+                <tr>
+                    <td width="20%" class="content_table_heading">Information</td>
+                    <td class="content_table_heading" align="right"></td>
+                </tr>
+                <tr>
+                    <td><b>Account Info:</b></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Name:</td>
+                    <td>{{ user.name }}</td>
+                </tr>
+                <tr>
+                    <td>Member Since:</td>
+                    <td>{{ user.created.strftime("%Y-%m-%d") }}</td>
+                </tr>
+                <tr>
+                    <td>Last Update:</td>
+                    <td>{{ user.last_update.strftime("%Y-%m-%d") }}</td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><b>Basic Info:</b></td>
+                    <td></td>
+                </tr>
+                <tr>
+                <tr>
+                    <td>School:</td>
+                    <td><input type="text" class="inputtext" name="school" value="{{ user.school }}" size="30"></td>
+                </tr>
+                <tr>
+                    <td>Status:</td>
+                    <td>{{ user.school_status.value }}</td>
+                </tr>
+                <tr>
+                    <td>Sex:</td>
+                    <td>
+                        <select class="inputtext" name="sex">
+							{% for sex in sex_enum %}
+                            <option value="{{ sex.value }}">{{ sex.value }}</option>
+                            {% endfor %}
+						</select>
+                    
+                    </td>
+                </tr>
+                <tr>
+                    <td>Residence:</td>
+                    <td><input type="text" class="inputtext" name="residence" value="{{ user.residence }}" size="30"></td>
+                </tr>
+                <tr>
+                    <td>Birthday:</td>
+                    <td><input type="text" class="inputtext" name="birthday" value="{{ user.birthday.strftime('%Y-%m-%d') if user.birthday != None else None}}" size="30"></td>
+                </tr>
+                <tr>
+                    <td>Home Town:</td>
+                    <td><input type="text" class="inputtext" name="home_town" value="{{ user.home_town }}" size="30"></td>
+                </tr>
+                <tr>
+                    <td>Highschool:</td>
+                    <td><input type="text" class="inputtext" name="highschool" value="{{ user.highschool }}" size="30"></td>
+                </tr>
+
+                <tr>
+                    <td>&nbsp;</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><b>Contact Info:</b></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Email:</td>
+                    <td>{{ user.email }}</td>
+                </tr>
+                <tr>
+                    <td>Screenname:</td>
+                    <td><input type="text" class="inputtext" name="screenname" value="{{ user.screenname }}" size="30"></td>
+                </tr>
+                <tr>
+                    <td>Mobile:</td>
+                    <td><input type="text" class="inputtext" name="mobile" value="{{ user.mobile }}" size="30"></td>
+                </tr>
+                <tr>
+                    <td>Websites:</td>
+                    <td><input type="text" class="inputtext" name="website" value="{{ user.website }}" size="30"></td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><b>Personal Info:</b></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Looking For:</td>
+                    <td>
+                        {% for looking_for in looking_for_enum %}
+                            <input type="checkbox" name="{{ looking_for }}" value="{{ looking_for.value }}"/>{{ looking_for.value }}
+                        {% endfor %}
+                    </td>
+                </tr>
+                <tr>
+                    <td>Interested In:</td>
+                    <td>
+                        <select class="inputtext" name="interested_in">
+                            <option value="Men">Men</option>
+                            <option value="Women">Women</option>
+                            <option value="Both">Men & Women</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Relationship Status:</td>
+                    <td>
+                        <select class="inputtext" name="relationship_status">
+							{% for relationship_status in relationship_status_enum %}
+                            <option value="{{ relationship_status.value }}">{{ relationship_status.value }}</option>
+                            {% endfor %}
+						</select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Political Views:</td>
+                    <td>
+                        <select class="inputtext" name="political_views">
+							{% for political_view in political_view_enum %}
+                            <option value="{{ political_view.value }}">{{ political_view.value }}</option>
+                            {% endfor %}
+						</select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Interests:</td>
+                    <td><input type="text" class="inputtext" name="interests" value="{{ user.interests }}" size="30"></td>
+                </tr>
+                <tr>
+                    <td>Music:</td>
+                    <td><input type="text" class="inputtext" name="music" value="{{ user.music }}" size="30"></td>
+                </tr>
+                <tr>
+                    <td>Classes:</td>
+                    <td><input type="text" class="inputtext" name="classes" value="{{ user.classes }}" size="30"></td>
+                </tr>
+                <tr>
+                    <td>Fridge:<br>(friends only)</td>
+                    <td><input type="text" class="inputtext" name="fridge" value="{{ user.fridge }}" size="30"></td>
+                </tr>
+            </table>
+            <center>
+                <br><input type="submit" value="Update" class="inputsubmit"><br>
+            </center>
+        </form>
+{% endblock %}

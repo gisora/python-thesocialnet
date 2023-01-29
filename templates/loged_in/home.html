@@ -1,0 +1,9 @@
+{% extends "loged_in.html" %}
+
+{% block content_title %}
+ Home of {{ name }}
+{% endblock %}
+
+{% block content %}
+    {{ name }} {{ email }} {{ status }}
+{% endblock %}

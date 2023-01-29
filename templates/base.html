@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{{ url_for('static', path='/style.css') }}" rel="stylesheet">
+    <link rel="shortcut icon" href="{{ url_for('static', path='/favicon.ico') }}" type="image/x-icon">
+    <title>TheSocialnet | Welcome to TheSocialnet</title>
+</head>
+
+<body>
+    <div id="container" class="solid_blue_border">
+        <table>
+            <tr>
+                <td>
+                    <table width="100%" class="blue_bg">
+                        <tr>
+                            <td rowspan="2">
+                                <img src="{{ url_for('static', path='img/logo_left.jpg') }}" />
+                            </td>
+                            <td valign="bottom">
+                                <img src="{{ url_for('static', path='img/logo_right.png') }}" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="top_nav">
+                                {% block topnav %}{% endblock %}
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <table width="100%">
+                        <tr>
+                            <td id="left_col">
+                                {% block leftnav %}{% endblock %}
+                            </td>
+                            <td id="right_col" align="center" valign="top">
+                                <table width="100%" class="solid_blue_border">
+                                    <tr>
+                                        <td class="content_table_heading">{% block content_title %}{% endblock %}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="content_table_row">
+                                            <div id="content">
+                                                {% block content %}{% endblock %}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div id="bottom_nav">
+                        <p>
+                            <a class="bottom_nav_link" href="/about">about</a>&nbsp;&nbsp;
+                            <a class="bottom_nav_link" href="/contact">contact</a>&nbsp;&nbsp;
+                            <a class="bottom_nav_link" href="/faq">faq</a>&nbsp;&nbsp;
+                            <a class="bottom_nav_link" href="/terms">terms</a>&nbsp;&nbsp;
+                            <a class="bottom_nav_link" href="/policy">privacy</a>
+                            <br>a Mark Zuckerberg production
+                            <br>TheFacebook &copy;2004
+                        </p>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</body>
+
+</html>

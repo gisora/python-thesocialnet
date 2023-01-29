@@ -1,0 +1,30 @@
+{% extends "loged_out.html" %}
+{% block content_title %}
+	Login
+{% endblock %}
+
+{% block content %}
+    <center>
+        <h2>[ Login ]</h2>
+        <p>
+        </p>
+        <form method="post" action="/login">
+            <table class="register_table">
+                    <tr>
+                        <td>Email:</td>
+                        <td><input type="text" class="inputtext" name="email" value="" size="30"></td>
+                    </tr>
+                    <tr>
+                        <td>Password:</td>
+                        <td><input type="password" class="inputtext" name="password" size="30"></td>
+                    </tr>
+                    <tr height="7">
+                        <td></td>
+                        <td></td>
+                    </tr>
+            </table>
+            <input type="submit" value="   Login   " class="inputsubmit">&nbsp;&nbsp;
+            <input type="button" value="Register" class="inputsubmit" onclick="javascript:document.location='/register';">
+        </form>
+    </center>
+{% endblock %}

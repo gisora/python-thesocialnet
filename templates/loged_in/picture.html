@@ -1,0 +1,46 @@
+{% extends "loged_in.html" %}
+
+{% block content_title %}
+	Picture upload
+{% endblock %}
+
+{% block my_requests %}
+    {{ my_requests }}
+{% endblock %}
+
+{% block my_messages %}
+    {{ my_messages }}
+{% endblock %}
+
+{% block content %}
+	<form method="post" action="/picture">
+		<table id="profile_table" width="100%" class="solid_blue_border">
+			<tr>
+				<td width="30%" class="content_table_heading">Upload</td>
+				<td class="content_table_heading" align="right"></td>
+			</tr>
+			<tr>
+				<td><b>Your current picture:</b></td>
+				<td align="center"><img width="170px" src="{{ url_for('static', path='profile_img/')}}{{ current_picture }}"></td>
+			</tr>
+			<tr>
+				<td colspan="2"><b>Select a file: </b><input class="inputtext" style="width: 85%;" type="file" name="new_picture" accept="image/png, image/jpeg"></td>
+			</tr>
+			<tr>
+				<td>&nbsp;</td>
+				<td></td>
+			</tr>
+		</table>
+		<center>
+			<br><input class="inputsubmit" type="submit" value="Upload">
+		</center>
+	</form>
+{% endblock %}
+
+
+
+
+
+
+
+ 

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block topnav%}
+    <a class="top_nav_link" href="/login">login</a>&nbsp;&nbsp;
+    <a class="top_nav_link" href="/register">register</a>&nbsp;&nbsp;
+    <a class="top_nav_link" href="/about">about</a>&nbsp;&nbsp;
+{% endblock %}}
+
+{% block leftnav %}
+    <div class="dashed_blue_border">
+        <form action="/login" method="post">
+            Email:<br>
+            <input type="text" class="inputtext" name="email">
+            Password:<br>
+            <input type="password" class="inputtext" name="password">
+            <br><br>
+            <center>
+                <input type="button" class="inputsubmit" value="register" onclick="javascript:document.location='/register';">
+                <input type="submit" class="inputsubmit" value="login">&nbsp;
+            </center>
+        </form>
+    </div>
+{% endblock%}
+
+{% block content_title %}{% endblock %}
+
+{% block content %}{% endblock %}
