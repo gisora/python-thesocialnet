@@ -1,0 +1,44 @@
+{% extends "loged_in.html" %}
+
+{% block content_title %}
+    Invites
+{% endblock %}
+
+{% block my_requests %}
+    {{ my_requests }}
+{% endblock %}
+
+{% block my_messages %}
+    {{ my_messages }}
+{% endblock %}
+
+{% block content %}
+<br>
+{% if my_invites|length > 0 -%}
+    
+    {% for result in my_invites %}
+        <table class="solid_blue_border" width="100%">
+            <tr>
+                <td align="center" class="solid_blue_border" rowspan="4"><img style="margin-top: 5px; margin-bottom: 5px;" height="120px" src="{{ url_for('static', path='profile_img/')}}{{ result.picture_src }}"></td>
+                <td style="padding-left: 5px;" width="150px"><b>Name: {{ result.name }}</b></td>
+                <td style="text-align: center;" width="150px" class="solid_blue_border"><a class="left_nav_link" href="/profile/{{result.id}}">View Profile</a></td>
+            </tr>
+            <tr>
+                <td style="padding-left: 5px;"><b>School: {{ result.school }}</b></td>
+                <td style="text-align: center;" class="solid_blue_border"><a class="left_nav_link">View Friends</a></td>
+            </tr>
+            <tr>
+                <td style="padding-left: 5px;"><b>Residence: {{ result.residence }}</b></td>
+                <td style="text-align: center;" class="solid_blue_border"><a class="left_nav_link" href="/invite/cancel/{{result.id}}">Cancel invite</a></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td style="text-align: center;" class="solid_blue_border"><a class="left_nav_link">Send Message</a></td>
+            </tr>
+        </table>
+        <br>   
+    {% endfor %}
+{% else %}
+<b>You didn't send any invites</b>
+{% endif %}
+{% endblock %}

@@ -1,7 +1,7 @@
 {% extends "loged_in.html" %}
 
 {% block content_title %}
-    Profile for {{ user.name }} (This is you)
+    Profile for {{ user.name }}
 {% endblock %}
 
 {% block my_requests %}
@@ -19,7 +19,7 @@
             <table width="100%" class="solid_blue_border">
                 <tr>
                     <td class="content_table_heading">Picture</td>
-                    <td class="content_table_heading" align="right">[ <a class="top_nav_link" href="/picture">edit</a> ]</td>
+                    <td class="content_table_heading" align="right"></td>
                 </tr>
                 <tr>
                     <td colspan="2" align="center"><img style="margin-top: 10px; margin-bottom: 10px;" width="190px" src="{{ url_for('static', path='profile_img/')}}{{ user.picture_src }}"></td>
@@ -28,20 +28,17 @@
             <br>
             <table id="profile_links" width="100%" class="solid_blue_border">
                 <tr class="solid_blue_border" style="padding-top: 5px;">
-                    <td><a class="left_nav_link" href="/profile">Edit your profile</a></td>
+                    <td><a class="left_nav_link" href="/invite/{{ user.id }}">Add to Friends</a></td>
                 </tr>
                 <tr class="solid_blue_border">
-                    <td><a class="left_nav_link">My account preferences</a></td>
-                </tr>
-                <tr class="solid_blue_border">
-                    <td><a class="left_nav_link">My privacy preferences</a></td>
+                    <td><a class="left_nav_link">Send Message</a></td>
                 </tr>
             </table>
             <br>
                 <table width="100%" class="solid_blue_border">
                 <tr>
                     <td class="content_table_heading">Friends</td>
-                    <td class="content_table_heading" align="right">[ edit ]</td>
+                    <td class="content_table_heading" align="right"></td>
                 </tr>
                 <tr>
                     <td colspan="2">{{ my_friends }}</td>
@@ -53,7 +50,7 @@
             <table id="profile_table" width="100%" class="solid_blue_border">
                 <tr>
                     <td width="35%" class="content_table_heading">Information</td>
-                    <td class="content_table_heading" align="right">[ <a class="top_nav_link" href="/profile">edit</a> ]</td>
+                    <td class="content_table_heading" align="right"></td>
                 </tr>
                 <tr>
                     <td><b>Account Info:</b></td>

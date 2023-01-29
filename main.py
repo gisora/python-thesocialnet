@@ -104,6 +104,26 @@ def get_home_page(*, request: Request, session: Session=Depends(get_db_session),
     }
     return templates.TemplateResponse("loged_in/profile.html", context)
 
+@app.get("/profile/{id}", response_class=HTMLResponse)
+def get_home_page(*, request: Request, session: Session=Depends(get_db_session), user_id=Depends(auth_handler.auth_wrapper), id:int):
+    viewer = session.get(User, user_id)
+    my_requests = 0
+    my_messages = 0
+    
+    profile_owner = session.get(User, id)
+    my_friends = f"{profile_owner.name} has no friends :("
+
+    context = {
+        "request": request,
+        "viewer": viewer,
+        "user": profile_owner,
+        "my_friends": my_friends,
+        "my_requests": my_requests,
+        "my_messages": my_messages
+    }
+    return templates.TemplateResponse("loged_in/profileid.html", context)
+
+
 @app.get("/profile", response_class=HTMLResponse)
 def get_edit_profile_page(*, request: Request, session: Session=Depends(get_db_session), user_id=Depends(auth_handler.auth_wrapper)):
     user = session.get(User, user_id)
@@ -211,8 +231,10 @@ def upload_picture(*, request: Request, session: Session=Depends(get_db_session)
 
 @app.get("/search", response_class=HTMLResponse)
 def get_search_page(*, request: Request, session: Session=Depends(get_db_session), user_id=Depends(auth_handler.auth_wrapper)):
+    user = session.get(User, user_id)
     my_requests = 0
     my_messages = 0
+
     context = {
         "request": request,
         "my_requests": my_requests,
@@ -224,6 +246,7 @@ def get_search_page(*, request: Request, session: Session=Depends(get_db_session
 
 @app.post("/search", response_class=HTMLResponse)
 def search_users(*, request: Request, session: Session=Depends(get_db_session), user_id=Depends(auth_handler.auth_wrapper), search_field:str=Form(), search_query:str=Form()):
+    user = session.get(User, user_id)
     my_requests = 0
     my_messages = 0
     
@@ -265,20 +288,59 @@ def search_users(*, request: Request, session: Session=Depends(get_db_session), 
 
     return templates.TemplateResponse("loged_in/search.html", context)
 
+
 @app.get("/invite", response_class=HTMLResponse)
 def get_invite_page(*, request: Request, session: Session=Depends(get_db_session), user_id=Depends(auth_handler.auth_wrapper)):
     user = session.get(User, user_id)
     my_requests = 0
     my_messages = 0
+    
+    stmt = select(Relationship).where(Relationship.sender_id == user.id).where(Relationship.confirmed == False)
+    results = session.exec(stmt).all()
+    my_invites = []
+
+    if len(results) > 0:
+        for r in results:
+            reciever = session.get(User, r.reciever_id)
+            result = {
+                "id": reciever.id,
+                "picture_src": reciever.picture_src,
+                "name": reciever.name,
+                "school": reciever.school,
+                "residence": reciever.residence
+            }
+            my_invites.append(result)
 
     context = {
         "request": request,
         "user": user,
-        "sex_enum": Sex,
-        "looking_for_enum": LookingFor,
-        "political_view_enum": PoliticalView,
-        "relationship_status_enum": RelationshipStatus,
         "my_requests": my_requests,
-        "my_messages": my_messages
+        "my_messages": my_messages,
+        "my_invites": my_invites
     }
-    return templates.TemplateResponse("loged_in/invite.html", context)
+    return templates.TemplateResponse("loged_in/invites.html", context)
+
+
+@app.get("/invite/{id}")
+def send_invite(*, request: Request, session: Session=Depends(get_db_session), user_id=Depends(auth_handler.auth_wrapper), id:int):
+    user = session.get(User, user_id)
+
+    friendship = Relationship(sender_id=user.id, reciever_id=id)
+    session.add(friendship)
+    session.commit()
+    session.refresh(friendship)
+
+    return RedirectResponse(url=app.url_path_for("get_invite_page"), status_code=status.HTTP_303_SEE_OTHER)
+
+@app.get("/invite/cancel/{id}")
+def cancel_invite(*, request: Request, session: Session=Depends(get_db_session), user_id=Depends(auth_handler.auth_wrapper), id:int):
+    user = session.get(User, user_id)
+
+    stmt = select(Relationship).where(Relationship.sender_id == user.id).where(Relationship.reciever_id == id)
+    result = session.exec(stmt).first()
+   
+    session.delete(result)
+    session.commit()
+
+    return RedirectResponse(url=app.url_path_for("get_invite_page"), status_code=status.HTTP_303_SEE_OTHER)
+    
