@@ -226,9 +226,7 @@ def get_search_page(*, request: Request, session: Session=Depends(get_db_session
 def search_users(*, request: Request, session: Session=Depends(get_db_session), user_id=Depends(auth_handler.auth_wrapper), search_field:str=Form(), search_query:str=Form()):
     my_requests = 0
     my_messages = 0
-    user = session.get(User, user_id)
     
-    print(search_field, search_query)
     if search_field == "name":
         stmt = select(User).where(User.name == search_query)
     if search_field == "email":
