@@ -93,7 +93,11 @@ def logout(request: Request, response: Response):
 def get_home_page(*, request: Request, session: Session=Depends(get_db_session), user_id=Depends(auth_handler.auth_wrapper)):
     user = session.get(User, user_id)
     my_friends = "You have no friends :("
-    my_requests = 0
+    
+    stmt = select(Relationship).where(Relationship.reciever_id == user.id).where(Relationship.confirmed == False)
+    results = session.exec(stmt).all()
+    my_requests = len(results) if len(results) > 0 else 0
+    
     my_messages = 0
     context = {
         "request": request,
@@ -107,7 +111,11 @@ def get_home_page(*, request: Request, session: Session=Depends(get_db_session),
 @app.get("/profile/{id}", response_class=HTMLResponse)
 def get_home_page(*, request: Request, session: Session=Depends(get_db_session), user_id=Depends(auth_handler.auth_wrapper), id:int):
     viewer = session.get(User, user_id)
-    my_requests = 0
+    
+    stmt = select(Relationship).where(Relationship.reciever_id == viewer.id).where(Relationship.confirmed == False)
+    results = session.exec(stmt).all()
+    my_requests = len(results) if len(results) > 0 else 0
+    
     my_messages = 0
     
     profile_owner = session.get(User, id)
@@ -127,7 +135,11 @@ def get_home_page(*, request: Request, session: Session=Depends(get_db_session),
 @app.get("/profile", response_class=HTMLResponse)
 def get_edit_profile_page(*, request: Request, session: Session=Depends(get_db_session), user_id=Depends(auth_handler.auth_wrapper)):
     user = session.get(User, user_id)
-    my_requests = 0
+    
+    stmt = select(Relationship).where(Relationship.reciever_id == user.id).where(Relationship.confirmed == False)
+    results = session.exec(stmt).all()
+    my_requests = len(results) if len(results) > 0 else 0
+    
     my_messages = 0
 
     context = {
@@ -200,9 +212,13 @@ async def update_profile(*, request: Request, session: Session=Depends(get_db_se
 
 @app.get("/picture", response_class=HTMLResponse)
 def get_picture_page(*, request: Request, session: Session=Depends(get_db_session), user_id=Depends(auth_handler.auth_wrapper)):
-    my_requests = 0
     my_messages = 0
     user = session.get(User, user_id)
+    stmt = select(Relationship).where(Relationship.reciever_id == user.id).where(Relationship.confirmed == False)
+    results = session.exec(stmt).all()
+    my_requests = len(results) if len(results) > 0 else 0
+
+
     context = {
         "request": request,
         "current_picture": user.picture_src,
@@ -232,7 +248,9 @@ def upload_picture(*, request: Request, session: Session=Depends(get_db_session)
 @app.get("/search", response_class=HTMLResponse)
 def get_search_page(*, request: Request, session: Session=Depends(get_db_session), user_id=Depends(auth_handler.auth_wrapper)):
     user = session.get(User, user_id)
-    my_requests = 0
+    stmt = select(Relationship).where(Relationship.reciever_id == user.id).where(Relationship.confirmed == False)
+    results = session.exec(stmt).all()
+    my_requests = len(results) if len(results) > 0 else 0
     my_messages = 0
 
     context = {
@@ -247,7 +265,9 @@ def get_search_page(*, request: Request, session: Session=Depends(get_db_session
 @app.post("/search", response_class=HTMLResponse)
 def search_users(*, request: Request, session: Session=Depends(get_db_session), user_id=Depends(auth_handler.auth_wrapper), search_field:str=Form(), search_query:str=Form()):
     user = session.get(User, user_id)
-    my_requests = 0
+    stmt = select(Relationship).where(Relationship.reciever_id == user.id).where(Relationship.confirmed == False)
+    results = session.exec(stmt).all()
+    my_requests = len(results) if len(results) > 0 else 0
     my_messages = 0
     
     if search_field == "name":
@@ -292,7 +312,9 @@ def search_users(*, request: Request, session: Session=Depends(get_db_session), 
 @app.get("/invite", response_class=HTMLResponse)
 def get_invite_page(*, request: Request, session: Session=Depends(get_db_session), user_id=Depends(auth_handler.auth_wrapper)):
     user = session.get(User, user_id)
-    my_requests = 0
+    stmt = select(Relationship).where(Relationship.reciever_id == user.id).where(Relationship.confirmed == False)
+    results = session.exec(stmt).all()
+    my_requests = len(results) if len(results) > 0 else 0
     my_messages = 0
     
     stmt = select(Relationship).where(Relationship.sender_id == user.id).where(Relationship.confirmed == False)
@@ -343,4 +365,35 @@ def cancel_invite(*, request: Request, session: Session=Depends(get_db_session),
     session.commit()
 
     return RedirectResponse(url=app.url_path_for("get_invite_page"), status_code=status.HTTP_303_SEE_OTHER)
+
+@app.get("/requests", response_class=HTMLResponse)
+def get_invite_page(*, request: Request, session: Session=Depends(get_db_session), user_id=Depends(auth_handler.auth_wrapper)):
+    user = session.get(User, user_id)
+    my_messages = 0
     
+    stmt = select(Relationship).where(Relationship.reciever_id == user.id).where(Relationship.confirmed == False)
+    results = session.exec(stmt).all()
+    my_requests = len(results) if len(results) > 0 else 0
+    
+    my_requests_list = []
+
+    if len(results) > 0:
+        for r in results:
+            sender = session.get(User, r.sender_id)
+            result = {
+                "id": sender.id,
+                "picture_src": sender.picture_src,
+                "name": sender.name,
+                "school": sender.school,
+                "residence": sender.residence
+            }
+            my_requests_list.append(result)
+
+    context = {
+        "request": request,
+        "user": user,
+        "my_requests": my_requests,
+        "my_messages": my_messages,
+        "my_requests_list": my_requests_list
+    }
+    return templates.TemplateResponse("loged_in/requests.html", context)
