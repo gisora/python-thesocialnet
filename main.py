@@ -1,5 +1,6 @@
+import shutil
 from datetime import datetime
-from fastapi import FastAPI, Response, Request, Depends, Form, HTTPException, status
+from fastapi import FastAPI, Response, Request, Depends, Form, HTTPException, status, UploadFile, File
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
@@ -69,7 +70,7 @@ def get_login_page(request: Request):
     return templates.TemplateResponse("loged_out/login.html", {"request": request})
 
 @app.post("/login")
-def login(*, response: Response, session: Session = Depends(get_db_session), email: str = Form(), password: str = Form()):
+def login(*, response: Response, session: Session = Depends(get_db_session), email: str=Form(), password: str=Form()):
     stmt = select(User).where(User.email == email)
     result = session.exec(stmt).first()
     if result is None or (not auth_handler.verify_password(password, result.password)):
@@ -189,3 +190,20 @@ def get_picture_page(*, request: Request, session: Session=Depends(get_db_sessio
     }
     
     return templates.TemplateResponse("loged_in/picture.html", context)
+
+@app.post("/picture")
+def upload_picture(*, request: Request, session: Session=Depends(get_db_session), user_id=Depends(auth_handler.auth_wrapper), picture_file: UploadFile=File(...)):
+    user = session.get(User, user_id)
+    
+    file_extension = picture_file.filename[picture_file.filename.rfind("."):]
+    picture_src = f"{user_id}{file_extension}"
+
+    picture_destination_file = f"static/profile_img/{picture_src}"
+
+    with open(picture_destination_file , "wb") as buffer:
+         shutil.copyfileobj(picture_file.file, buffer)
+
+    user.picture_src = picture_src
+    session.commit()
+    session.refresh(user)
+    return RedirectResponse(url=app.url_path_for("get_home_page"), status_code=status.HTTP_303_SEE_OTHER)

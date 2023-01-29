@@ -13,7 +13,7 @@
 {% endblock %}
 
 {% block content %}
-	<form method="post" action="/picture">
+	<form method="post" action="/picture" enctype="multipart/form-data">
 		<table id="profile_table" width="100%" class="solid_blue_border">
 			<tr>
 				<td width="30%" class="content_table_heading">Upload</td>
@@ -21,10 +21,10 @@
 			</tr>
 			<tr>
 				<td><b>Your current picture:</b></td>
-				<td align="center"><img width="170px" src="{{ url_for('static', path='profile_img/')}}{{ current_picture }}"></td>
+				<td align="center"><img width="190px" src="{{ url_for('static', path='profile_img/')}}{{ current_picture }}"></td>
 			</tr>
 			<tr>
-				<td colspan="2"><b>Select a file: </b><input class="inputtext" style="width: 85%;" type="file" name="new_picture" accept="image/png, image/jpeg"></td>
+				<td colspan="2"><b>Select a file: </b><input class="inputtext" style="width: 85%;" type="file" name="picture_file" accept="image/png, image/jpeg"></td>
 			</tr>
 			<tr>
 				<td>&nbsp;</td>
