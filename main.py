@@ -172,6 +172,7 @@ async def update_profile(*, request: Request, session: Session=Depends(get_db_se
     user.music = form.get("music")
     user.classes = form.get("classes")
     user.fridge = form.get("fridge")
+    user.last_update = datetime.now()
 
     session.commit()
     session.refresh(user)
@@ -207,3 +208,79 @@ def upload_picture(*, request: Request, session: Session=Depends(get_db_session)
     session.commit()
     session.refresh(user)
     return RedirectResponse(url=app.url_path_for("get_home_page"), status_code=status.HTTP_303_SEE_OTHER)
+
+@app.get("/search", response_class=HTMLResponse)
+def get_search_page(*, request: Request, session: Session=Depends(get_db_session), user_id=Depends(auth_handler.auth_wrapper)):
+    my_requests = 0
+    my_messages = 0
+    context = {
+        "request": request,
+        "my_requests": my_requests,
+        "my_messages": my_messages,
+        "search_results": None
+    }
+    return templates.TemplateResponse("loged_in/search.html", context)
+
+
+@app.post("/search", response_class=HTMLResponse)
+def search_users(*, request: Request, session: Session=Depends(get_db_session), user_id=Depends(auth_handler.auth_wrapper), search_field:str=Form(), search_query:str=Form()):
+    my_requests = 0
+    my_messages = 0
+    user = session.get(User, user_id)
+    
+    print(search_field, search_query)
+    if search_field == "name":
+        stmt = select(User).where(User.name == search_query)
+    if search_field == "email":
+        stmt = select(User).where(User.email == search_query)
+    if search_field == "school":
+        stmt = select(User).where(User.school == search_query)
+    if search_field == "school_status":
+        stmt = select(User).where(User.school_status == search_query)
+    if search_field == "sex":
+        stmt = select(User).where(User.sex == search_query)
+    if search_field == "residence":
+        stmt = select(User).where(User.residence == search_query)
+    
+    results = session.exec(stmt).all()
+    
+    search_results = []
+    if len(results) > 0:
+        for r in results:
+            if r.id == user_id:
+                continue
+            result = {
+                "id": r.id,
+                "picture_src": r.picture_src,
+                "name": r.name,
+                "school": r.school,
+                "residence": r.residence
+            }
+            search_results.append(result)
+
+    context = {
+        "request": request,
+        "my_requests": my_requests,
+        "my_messages": my_messages,
+        "search_results": search_results
+    }
+
+    return templates.TemplateResponse("loged_in/search.html", context)
+
+@app.get("/invite", response_class=HTMLResponse)
+def get_invite_page(*, request: Request, session: Session=Depends(get_db_session), user_id=Depends(auth_handler.auth_wrapper)):
+    user = session.get(User, user_id)
+    my_requests = 0
+    my_messages = 0
+
+    context = {
+        "request": request,
+        "user": user,
+        "sex_enum": Sex,
+        "looking_for_enum": LookingFor,
+        "political_view_enum": PoliticalView,
+        "relationship_status_enum": RelationshipStatus,
+        "my_requests": my_requests,
+        "my_messages": my_messages
+    }
+    return templates.TemplateResponse("loged_in/invite.html", context)

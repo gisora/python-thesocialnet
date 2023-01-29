@@ -103,7 +103,7 @@ class Relationship(SQLModel, table=True):
     sender_id: int = Field(default=None, foreign_key="user.id", primary_key=True)
     reciever_id: int = Field(default=None, foreign_key="user.id", primary_key=True)
     type: RelationshipType = Field(default=RelationshipType.friends)
-    confirmed: bool
+    confirmed: bool = Field(default=False)
 
 
 engine = create_engine(DB_URL)
@@ -115,7 +115,6 @@ def create_all_tables():
 
 def load_demo_data():
     pass
-
 
 if __name__ == "__main__":
     create_all_tables()
