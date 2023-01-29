@@ -308,8 +308,6 @@ def search_users(*, request: Request, session: Session=Depends(get_db_session), 
         stmt = select(User).where(User.email == search_query)
     if search_field == "school":
         stmt = select(User).where(User.school == search_query)
-    if search_field == "school_status":
-        stmt = select(User).where(User.school_status == search_query)
     if search_field == "sex":
         stmt = select(User).where(User.sex == search_query)
     if search_field == "residence":
