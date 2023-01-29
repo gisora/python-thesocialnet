@@ -16,31 +16,29 @@
 <table>
     <tr valign="top">
         <td width="40%">
-            <table id="picture_table" width="100%" class="solid_blue_border">
+            <table width="100%" class="solid_blue_border">
                 <tr>
                     <td class="content_table_heading">Picture</td>
-                    <td class="content_table_heading" align="right">[ <a href="/picture">edit</a> ]</td>
+                    <td class="content_table_heading" align="right">[ <a class="top_nav_link" href="/picture">edit</a> ]</td>
                 </tr>
                 <tr>
-                    <td colspan="2" align="center"><img style="margin-top: 10px;" width="190px" src="{{ url_for('static', path='profile_img/')}}{{ user.picture_src }}"></td>
+                    <td colspan="2" align="center"><img style="margin-top: 10px; margin-bottom: 10px;" width="190px" src="{{ url_for('static', path='profile_img/')}}{{ user.picture_src }}"></td>
                 </tr>
-                <tr>
-                    <td>&nbsp;</td>
-                    <td></td>
-                </tr>
-                <tr class="solid_blue_border">
-                    <td colspan="2"><a href="/profile">Edit your profile</a></td>
-                </tr>
-                <tr class="solid_blue_border">
-                    <td colspan="2">My account preferences</td>
+            </table>
+            <br>
+            <table id="profile_links" width="100%" class="solid_blue_border">
+                <tr class="solid_blue_border" style="padding-top: 5px;">
+                    <td><a href="/profile">Edit your profile</a></td>
                 </tr>
                 <tr class="solid_blue_border">
-                    <td colspan="2">My privacy preferences</td>
+                    <td>My account preferences</td>
                 </tr>
-                <tr>
-                    <td>&nbsp;</td>
-                    <td></td>
+                <tr class="solid_blue_border">
+                    <td>My privacy preferences</td>
                 </tr>
+            </table>
+            <br>
+                <table width="100%" class="solid_blue_border">
                 <tr>
                     <td class="content_table_heading">Friends</td>
                     <td class="content_table_heading" align="right">[ edit ]</td>
@@ -55,7 +53,7 @@
             <table id="profile_table" width="100%" class="solid_blue_border">
                 <tr>
                     <td width="35%" class="content_table_heading">Information</td>
-                    <td class="content_table_heading" align="right">[ <a href="/profile">edit</a> ]</td>
+                    <td class="content_table_heading" align="right">[ <a class="top_nav_link" href="/profile">edit</a> ]</td>
                 </tr>
                 <tr>
                     <td><b>Account Info:</b></td>

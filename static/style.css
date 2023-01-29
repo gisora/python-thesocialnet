@@ -33,7 +33,7 @@ table#profile_table td {
 
 table#picture_table {
     border-collapse: initial;
-    border-spacing: 10px;
+    border-spacing: 0px;
 }
 
 table#profile_table td {
@@ -106,12 +106,24 @@ table#profile_table td {
     text-decoration: none;
 }
 
+.top_nav_link:visited {
+    color: #FFFFFF;
+    text-decoration: none;
+}
+
 .bottom_nav_link {
     text-decoration: none;
 }
 
 .left_nav_link {
     margin-left: 5px;
+    color: #538ADC;
+    text-decoration: none;
+}
+
+.left_nav_link:visited {
+    margin-left: 5px;
+    color: #538ADC;
     text-decoration: none;
 }
 
