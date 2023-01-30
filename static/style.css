@@ -5,6 +5,10 @@ body {
     text-decoration: none;
 }
 
+p {
+    font-size: 13px;
+}
+
 table {
     border-collapse: collapse;
     border: 0px;
